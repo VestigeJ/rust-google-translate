@@ -9,3 +9,6 @@ hyper = "*"
 [dependencies.gtk]
 git = "https://github.com/gtk-rs/gtk"
 features = ["3.10"]
+
+[dependencies.gdk]
+git = "https://github.com/gtk-rs/gdk"

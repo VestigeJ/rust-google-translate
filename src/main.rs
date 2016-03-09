@@ -1,7 +1,10 @@
 extern crate hyper;
 extern crate gtk;
+extern crate gdk;
 
 use std::io::Read;
+use std::rc::Rc;
+use std::cell::RefCell;
 
 use hyper::Client;
 use hyper::header::Connection;
@@ -19,6 +22,7 @@ use gtk::{
     TextTagTable,
     WidgetSignals
 };
+use gdk::enums::key;
 
 const TRANSLATE: &'static str = "http://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=";
 
@@ -45,28 +49,45 @@ fn main() {
     let output_buffer = TextBuffer::new(Some(&TextTagTable::new()));
     translation_output.set_buffer(Some(&output_buffer));
 
+    // Wrap translation_button so that it may be borrowed multiple times
+    let wrapped_translation_button = Rc::new(RefCell::new(translate_button));
+
+    {   // Take the input buffer, translate it, and output it to the outbut buffer.
+        let translate_button = wrapped_translation_button.clone();
+        translate_button.borrow().connect_clicked(move |_| {
+            // Get the input buffer's text
+            let buffer = translation_input.get_buffer().unwrap();
+            let string = buffer.get_text(&buffer.get_start_iter(), &buffer.get_end_iter(), false).unwrap();
+
+            // Get the langauge combo box's text.
+            let language = language_box.get_active_text().unwrap();
+
+            // Translate the text.
+            let mut translation = String::new();
+            translate(&string, language.as_str(), &mut translation);
+
+            // Update the translation output text view.
+            translation_output.get_buffer().unwrap().set_text(translation.as_str());
+        });
+    }
+
     // Exit the program if it receives the delete event.
     window.connect_delete_event(|_,_| {
         gtk::main_quit();
         Inhibit(false)
     });
 
-    // Take the input buffer, translate it, and output it to the outbut buffer.
-    translate_button.connect_clicked(move |_| {
-        // Get the input buffer's text
-        let buffer = translation_input.get_buffer().unwrap();
-        let string = buffer.get_text(&buffer.get_start_iter(), &buffer.get_end_iter(), false).unwrap();
-
-        // Get the langauge combo box's text.
-        let language = language_box.get_active_text().unwrap();
-
-        // Translate the text.
-        let mut translation = String::new();
-        translate(&string, language.as_str(), &mut translation);
-
-        // Update the translation output text view.
-        translation_output.get_buffer().unwrap().set_text(translation.as_str());
-    });
+    { // Program what the program should do when certain keys are pressed
+        let translate_button = wrapped_translation_button.clone();
+        window.connect_key_press_event(move |_,key| {
+            match key.get_keyval() {
+                key::Escape => gtk::main_quit(),
+                key::Return  => translate_button.borrow().clicked(),
+                _ => ()
+            }
+            Inhibit(false)
+        });
+    }
 
     // Show the window and start the program
     window.show_all();
