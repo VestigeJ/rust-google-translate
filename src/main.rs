@@ -53,11 +53,18 @@ fn main() {
 
     // Take the input buffer, translate it, and output it to the outbut buffer.
     translate_button.connect_clicked(move |_| {
+        // Get the input buffer's text
         let buffer = translation_input.get_buffer().unwrap();
         let string = buffer.get_text(&buffer.get_start_iter(), &buffer.get_end_iter(), false).unwrap();
-        let mut translation = String::new();
+
+        // Get the langauge combo box's text.
         let language = language_box.get_active_text().unwrap();
+
+        // Translate the text.
+        let mut translation = String::new();
         translate(&string, language.as_str(), &mut translation);
+
+        // Update the translation output text view.
         translation_output.get_buffer().unwrap().set_text(translation.as_str());
     });
 
