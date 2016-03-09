@@ -34,7 +34,6 @@ fn main() {
 
     // Grab the elements from the UI
     let window: Window = builder.get_object("main_window").unwrap();
-    let exit_button: Button = builder.get_object("exit_button").unwrap();
     let translate_button: Button = builder.get_object("translate_button").unwrap();
     let translation_input: TextView = builder.get_object("translation_input").unwrap();
     let translation_output: TextView = builder.get_object("translation_output").unwrap();
@@ -50,12 +49,6 @@ fn main() {
     window.connect_delete_event(|_,_| {
         gtk::main_quit();
         Inhibit(false)
-    });
-
-    // Exit the program when the exit button is clicked.
-    exit_button.connect_clicked(|_| {
-        gtk::main_quit();
-        Inhibit(false);
     });
 
     // Take the input buffer, translate it, and output it to the outbut buffer.
