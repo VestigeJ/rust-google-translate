@@ -1,0 +1,11 @@
+[package]
+name = "rust-google-translate"
+version = "0.1.0"
+authors = ["Michael Aaron Murphy <mmstickman@gmail.com>"]
+
+[dependencies]
+hyper = "*"
+
+[dependencies.gtk]
+git = "https://github.com/gtk-rs/gtk"
+features = ["3.10"]
