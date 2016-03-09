@@ -12,6 +12,7 @@ use gtk::{
     Builder,
     Button,
     ButtonSignals,
+    ComboBoxText,
     Inhibit,
     TextView,
     TextBuffer,
@@ -19,7 +20,7 @@ use gtk::{
     WidgetSignals
 };
 
-const TRANSLATE: &'static str = "http://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q=";
+const TRANSLATE: &'static str = "http://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=";
 
 fn main() {
     // Initialize GTK
@@ -37,6 +38,7 @@ fn main() {
     let translate_button: Button = builder.get_object("translate_button").unwrap();
     let translation_input: TextView = builder.get_object("translation_input").unwrap();
     let translation_output: TextView = builder.get_object("translation_output").unwrap();
+    let language_box: ComboBoxText = builder.get_object("language").unwrap();
 
     // Add a TextBuffer to every TextView
     let input_buffer = TextBuffer::new(Some(&TextTagTable::new()));
@@ -61,7 +63,8 @@ fn main() {
         let buffer = translation_input.get_buffer().unwrap();
         let string = buffer.get_text(&buffer.get_start_iter(), &buffer.get_end_iter(), false).unwrap();
         let mut translation = String::new();
-        translate(&string, &mut translation);
+        let language = language_box.get_active_text().unwrap();
+        translate(&string, language.as_str(), &mut translation);
         translation_output.get_buffer().unwrap().set_text(translation.as_str());
     });
 
@@ -71,9 +74,11 @@ fn main() {
 }
 
 /// Send text to Google Translate and translate it.
-fn translate(input: &str, output: &mut String) {
+fn translate(input: &str, language: &str, output: &mut String) {
     let mut search = String::new();
     search.push_str(TRANSLATE);
+    search.push_str(language);
+    search.push_str("&dt=t&q=");
     search.push_str(input);
     if let Ok(mut response) = Client::new().get(&search).header(Connection::close()).send() {
         search.clear();

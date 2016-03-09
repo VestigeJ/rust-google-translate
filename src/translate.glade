@@ -5,7 +5,7 @@
   <object class="GtkWindow" id="main_window">
     <property name="can_focus">False</property>
     <property name="default_width">500</property>
-    <property name="default_height">600</property>
+    <property name="default_height">400</property>
     <child>
       <object class="GtkBox" id="box">
         <property name="visible">True</property>
@@ -64,7 +64,7 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="title">Google Translate</property>
-        <property name="subtitle">Translate anything into English</property>
+        <property name="subtitle">Translate Text</property>
         <child>
           <object class="GtkButton" id="exit_button">
             <property name="label" translatable="yes">Exit</property>
@@ -79,6 +79,30 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBoxText" id="language">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="active">0</property>
+            <items>
+              <item translatable="yes">DE</item>
+              <item id="0" translatable="yes">EN</item>
+              <item id="1" translatable="yes">EO</item>
+              <item translatable="yes">ES</item>
+              <item translatable="yes">FR</item>
+              <item translatable="yes">IT</item>
+              <item translatable="yes">JA</item>
+              <item translatable="yes">KO</item>
+              <item translatable="yes">RU</item>
+              <item translatable="yes">SV</item>
+              <item translatable="yes">ZH-CN</item>
+            </items>
           </object>
           <packing>
             <property name="pack_type">end</property>
