@@ -9,9 +9,9 @@ use std::cell::RefCell;
 use hyper::Client;
 use hyper::header::Connection;
 
+use gdk::enums::key;
 use gtk::traits::*;
 use gtk::{
-    Window,
     Builder,
     Button,
     ButtonSignals,
@@ -20,13 +20,56 @@ use gtk::{
     TextView,
     TextBuffer,
     TextTagTable,
-    WidgetSignals
+    WidgetSignals,
+    Window
 };
-use gdk::enums::key;
 
 const TRANSLATE: &'static str = "http://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=";
+const TRY: &'static str = "Try 'rust-google-translate --help' for more information";
+const HELP: &'static str = r#"NAME
+    rust-google-translate - translate a phrase into another language with Google Translate
+
+SYNOPSIS
+    rust-google-translate [-c LANG PHRASE] [-h | --help]
+
+DESCRIPTION
+    Translates text from one language to another. If no arguments are given, a GTK GUI is launched.
+
+OPTIONS
+    -c LANG PHRASE
+        translates PHRASE into LANG
+
+    -h, --help
+        displays this information
+
+EXAMPLE
+    rust-google-translate -c EN Mi estas ne vin. Vi estas ne min.
+        > I am not you. You are not me.
+"#;
+
 
 fn main() {
+    let mut arguments = std::env::args().skip(1);
+    if let Some(flag) = arguments.next() {
+        match flag.as_str() {
+            "-c" => {
+                if let Some(lang) = arguments.next() {
+                    let input = arguments.fold(String::with_capacity(lang.len()), |acc, x| acc + x.as_str() + " ");
+                    let mut translation = String::new();
+                    translate(input.as_str(), lang.as_str(), &mut translation);
+                    println!("{}", translation);
+                }
+            },
+            "-h" | "--help" => println!("{}", HELP),
+            _ => println!("rust-google-translate: invalid option -- '{}'\n{}", flag, TRY)
+        }
+    } else {
+        launch_gui();
+    }
+}
+
+/// Launch the GTK GUI
+fn launch_gui() {
     // Initialize GTK
     if let Err(message) = gtk::init() {
         panic!("{:?}", message);
