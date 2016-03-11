@@ -47,7 +47,6 @@ EXAMPLE
         > I am not you. You are not me.
 "#;
 
-
 fn main() {
     let mut arguments = std::env::args().skip(1);
     if let Some(flag) = arguments.next() {
@@ -170,16 +169,14 @@ fn parse_message(input: &str, translation: &mut String) {
                 _     => unreachable!()
             }
         } else if ignore {
-            matched = match matched {
-                0 => if character == ',' { 1 } else { 0 },
-                1 => if character == ',' { 2 } else { 0 },
-                2 => if character == ',' { 3 } else { 0 },
-                3 => if character == '0' { 4 } else { 0 },
-                4 => if character == ']' { 5 } else { 0 },
-                5 => match character {
-                    ']' => break, // ',,,0]]' has been found
-                    _   => {ignore = false; found_match = true; 0 }
-                },
+            matched = match (matched, character) {
+                (0, ',') => 1,
+                (1, ',') => 2,
+                (2, ',') => 3,
+                (3, '0') => 4,
+                (4, ']') => 5,
+                (5, ']') => break, // ',,,0]]' has been found
+                (5, _)   => {ignore = false; found_match = true; 0 }
                 _ => 0
             };
         } else {
