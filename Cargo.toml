@@ -5,8 +5,5 @@ authors = ["Michael Aaron Murphy <mmstickman@gmail.com>"]
 
 [dependencies]
 hyper = "*"
+gtk = { version = "0.0.7", features = ["v3_10"] }
 gdk = "0.3.0"
-
-[dependencies.gtk]
-version = "0.0.7"
-features = ["v3_10"]
