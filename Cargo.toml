@@ -5,10 +5,8 @@ authors = ["Michael Aaron Murphy <mmstickman@gmail.com>"]
 
 [dependencies]
 hyper = "*"
+gdk = "0.3.0"
 
 [dependencies.gtk]
-git = "https://github.com/gtk-rs/gtk"
-features = ["3.10"]
-
-[dependencies.gdk]
-git = "https://github.com/gtk-rs/gdk"
+version = "0.0.7"
+features = ["v3_10"]
