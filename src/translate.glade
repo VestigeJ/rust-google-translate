@@ -38,25 +38,6 @@
             <property name="position">1</property>
           </packing>
         </child>
-        <child>
-          <object class="GtkTextView" id="translation_output">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hscroll_policy">natural</property>
-            <property name="vscroll_policy">natural</property>
-            <property name="editable">False</property>
-            <property name="wrap_mode">word</property>
-            <property name="left_margin">5</property>
-            <property name="right_margin">5</property>
-            <property name="cursor_visible">False</property>
-            <property name="accepts_tab">False</property>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
       </object>
     </child>
     <child type="titlebar">
@@ -71,19 +52,18 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="active">1</property>
-            <property name="active_id">EN</property>
+            <property name="active_id">English</property>
             <items>
-              <item id="0" translatable="yes">DE</item>
-              <item id="1" translatable="yes">EN</item>
-              <item id="2" translatable="yes">EO</item>
-              <item id="&lt;Enter ID&gt;" translatable="yes">ES</item>
-              <item translatable="yes">FR</item>
-              <item translatable="yes">IT</item>
-              <item translatable="yes">JA</item>
-              <item translatable="yes">KO</item>
-              <item translatable="yes">RU</item>
-              <item translatable="yes">SV</item>
-              <item translatable="yes">ZH-CN</item>
+              <item translatable="yes">Chinese</item>
+              <item id="1" translatable="yes">English</item>
+              <item translatable="yes">Esperanto</item>
+              <item translatable="yes">French</item>
+              <item translatable="yes">German</item>
+              <item translatable="yes">Italian</item>
+              <item translatable="yes">Japanese</item>
+              <item translatable="yes">Korean</item>
+              <item translatable="yes">Russian</item>
+              <item translatable="yes">Spanish</item>
             </items>
           </object>
         </child>
